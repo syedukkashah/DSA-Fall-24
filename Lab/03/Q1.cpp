@@ -17,8 +17,8 @@ class SLL{
         node* n = new node(val);
         if(head==NULL) head = n;
         else{
-            n->next = head;
-            head = n;
+	        n->next = head;
+	        head = n;
         }
     }
     void insertAtTail(const int val)
@@ -26,9 +26,9 @@ class SLL{
         node* n = new node(val);
         if(head==NULL) head = n;
         else{
-            node* current = head;
-            while(current->next != NULL){current = current->next;} 
-            current->next = n;
+	        node* current = head;
+	        while(current->next != NULL){current = current->next;} 
+	        current->next = n;
         }
     }
     void InsertAfterValue(const int value, const int insertingValue)
@@ -36,11 +36,11 @@ class SLL{
 		node* n = new node(insertingValue);
 		if(head==NULL){head = n;}
 		else{
-				node* currentPtr = head;
-				while(currentPtr->data!= value)currentPtr = currentPtr->next;
-				node* temp = currentPtr->next;
-				currentPtr->next = n;
-				n->next = temp;
+			node* currentPtr = head;
+			while(currentPtr->data!= value){currentPtr = currentPtr->next;}
+			node* temp = currentPtr->next;
+			currentPtr->next = n;
+			n->next = temp;
 	        }
     }
     void InsertBeforeValue(const int value, const int insertingValue)
@@ -110,24 +110,23 @@ class SLL{
 };
 int main() {
     SLL list;
-
     // Inserting elements at the front
     list.insertAtFront(10);
     list.insertAtFront(20);
     list.insertAtFront(30);
     cout << "After inserting at front: ";
     list.printList();
-	list.insertAtTail(40);
-	list.insertAtTail(50);
-	list.insertAtTail(60);
-	  // Inserting elements at the back
-	cout << "\nAfter inserting at tail: ";
-	list.printList();
-	list.deleteFromHead();
-	cout<<"\n";
-	list.printList();
-	list.deleteFromTail();
-	cout<<"\n";
-	list.printList();
-	
+    list.insertAtTail(40);
+    list.insertAtTail(50);
+    list.insertAtTail(60);
+    // Inserting elements at the back
+    cout << "\nAfter inserting at tail: ";
+    list.printList();
+    list.deleteFromHead();
+    cout<<"\n";
+    list.printList();
+    list.deleteFromTail();
+    cout<<"\n";
+    list.printList();
+    return 0;	
 }
