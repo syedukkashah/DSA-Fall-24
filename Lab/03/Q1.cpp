@@ -57,7 +57,11 @@ class SLL{
 	int numNodes()
 	{
 		int nodes=0;
-		for(node* currentPtr = head; currentPtr->next!=NULL;currentPtr = currentPtr->next){nodes++;}
+		node* currentPtr = head;
+		while(currentPtr!=NULL){
+			nodes++;
+			currentPtr = currentPtr->next;
+		}
 		return nodes;
 	}
 	void deleteFromHead()
@@ -75,10 +79,10 @@ class SLL{
 	void deleteFromTail()
 	{
 		if(head!=NULL){
-			node* currPtr;
-			for(node* currPtr = head; currPtr->next!=NULL; currPtr = currPtr->next){}
-			delete currPtr;
-			currPtr = NULL;
+			node* currPtr = head;
+			while(currPtr->next->next!=NULL){currPtr = currPtr->next;}
+			delete currPtr->next;
+			currPtr->next = NULL;
 	    }
 	    else{
 	    	cout<<"Linked list not found"<<endl;
@@ -99,7 +103,6 @@ class SLL{
 	}
 	void printList()
 	{
-		cout<<"List: "<<endl;
 		node* currentPtr = head;
 		while(currentPtr!=NULL)
 		{
@@ -114,19 +117,31 @@ int main() {
     list.insertAtFront(10);
     list.insertAtFront(20);
     list.insertAtFront(30);
-    cout << "After inserting at front: ";
+    cout << "After inserting at front:"<<endl;
     list.printList();
     list.insertAtTail(40);
     list.insertAtTail(50);
     list.insertAtTail(60);
     // Inserting elements at the back
-    cout << "\nAfter inserting at tail: ";
+    cout << "\nAfter inserting at tail:"<<endl;
     list.printList();
+	cout<<"\nTotal nodes in list: "<<list.numNodes()<<endl;
     list.deleteFromHead();
+	cout << "\nAfter deleting from head:"<<endl;
     cout<<"\n";
     list.printList();
     list.deleteFromTail();
+	cout << "\nAfter deleting from tail:"<<endl;
     cout<<"\n";
     list.printList();
+	list.deleteValue(40);
+	cout<<"\nAfter deleting value:"<<endl;
+	list.printList();
+	list.InsertAfterValue(20, 11);
+	cout << "\nInserted value after 20:"<<endl;
+	list.printList();
+	list.InsertBeforeValue(50, 22);
+	cout << "\nInserted value before 50:"<<endl;
+	list.printList();
     return 0;	
 }
