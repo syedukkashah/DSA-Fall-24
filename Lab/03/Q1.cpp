@@ -134,14 +134,14 @@ int main() {
 	cout << "\nAfter deleting from tail:"<<endl;
     cout<<"\n";
     list.printList();
-	list.deleteValue(40);
-	cout<<"\nAfter deleting value:"<<endl;
-	list.printList();
-	list.InsertAfterValue(20, 11);
-	cout << "\nInserted value after 20:"<<endl;
-	list.printList();
-	list.InsertBeforeValue(50, 22);
-	cout << "\nInserted value before 50:"<<endl;
-	list.printList();
+    list.deleteValue(40);
+    cout<<"\nAfter deleting value:"<<endl;
+    list.printList();
+    list.InsertAfterValue(20, 11);
+    cout << "\nInserted value after 20:"<<endl;
+    list.printList();
+    list.InsertBeforeValue(50, 22);
+    cout << "\nInserted value before 50:"<<endl;
+    list.printList();
     return 0;	
 }
