@@ -23,16 +23,22 @@ class SLL{
             curr->next = n;
         }
     }
-    node* reverse(){
-        node* curr = head, *prev = NULL, *next;
+    SLL segregate()
+    {
+        SLL newList; 
+        node* curr = head;
         while(curr!=NULL)
         {
-            next = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = next;
+            if(curr->data%2==0)newList.insertAtTail(curr->data); 
+            curr = curr->next;
         }
-        return prev;
+        curr = head; 
+        while(curr!=NULL)
+        {
+            if(curr->data%2!=0)newList.insertAtTail(curr->data); 
+            curr = curr->next;
+        }
+        return newList;
     }
     void print()
     {
@@ -51,8 +57,11 @@ int main()
     list.insertAtTail(2);
     list.insertAtTail(3);
     list.insertAtTail(4);
+    list.insertAtTail(5);
+    list.insertAtTail(6);
     list.print();
-    list = list.reverse();
+    list = list.segregate();
+    cout<<"printing segregated list: "<<endl;
     list.print();
     return 0;
 }
