@@ -1,9 +1,6 @@
 #include <iostream>
 using namespace std;
 #define size 5
-
-//int* array = {21, 43, 24, 98, 123};
-
 void bubbleSort(int* arr)
 {
     for(int i = 0; i < size; i++)
@@ -19,7 +16,18 @@ void bubbleSort(int* arr)
         }
     }
 }
-
+void shellSort(int* arr)
+{
+    for (int gap = size/2; gap > 0; gap /= 2){
+        for (int i = gap; i < size; i += 1)
+        {
+            int temp = arr[i];
+            int j;            
+            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) arr[j] = arr[j - gap];
+            arr[j] = temp;
+        }
+    }
+}
 void selectionSort(int* arr)
 {
     for(int i = 0; i < size - 1; i++)
@@ -53,52 +61,75 @@ void insertionSort(int* arr)
             arr[j + 1] = arr[j];
             j = j - 1;
         }
-
         arr[j + 1] = key;
     }
 }
-
-
-void printArray(int* arr)
+void combSort(int *arr) {
+   int gap = size;
+   bool flag = true;
+   while(gap != 1 || flag == true) {
+      gap = (gap*10)/13; 
+      if(gap<1)
+         gap = 1;
+      flag = false;
+     for(int i = 0; i<size-gap; i++) { 
+         if(arr[i] > arr[i+gap]) {
+            int temp = arr[i+gap];
+            arr[i+gap] = arr[i];
+            arr[i] = temp;
+            flag = true;
+         }
+      }
+   }
+}
+void print(int* arr)
 {
-    for(int i = 0; i < size; i++)
-    {
-        cout << arr[i] << " ";
-    }
+    for(int i = 0; i < size; i++) cout << arr[i] << " ";
     cout << "\n";
 }
-
+int linear_search(int* arr, int search)
+{
+    for (int i = 0; i < size; i++)
+        if (arr[i] == search)
+            return i;
+    return -1;
+}
+ 
 int main()
 {
     int array1[] = {21, 43, 28, 45, 78};
-
     cout << "before bubble sort:\n";
-    printArray(array1);
-
+    print(array1);
     bubbleSort(array1);
-
     cout << "after bubble sort:\n";
-    printArray(array1);
-
+    print(array1);
     int array2[] = {22, 43, 88, 45, 78};
-
     cout << "\nbefore selection sort:\n";
-    printArray(array2);
-
+    print(array2);
     selectionSort(array2);
-
     cout << "after selection sort:\n";
-    printArray(array2);
-
+    print(array2);
     int array3[] = {25, 73, 88, 95, 78};
-
     cout << "\nbefore insertion sort:\n";
-    printArray(array3);
-
+    print(array3);
     insertionSort(array3);
-
     cout << "after insertion sort:\n";
-    printArray(array3);
-
+    print(array3);
+    int array4[] = {25, 73, 88, 95, 78};
+    cout << "\nbefore shell sort:\n";
+    print(array4);
+    shellSort(array4);
+    cout << "after shell sort:\n";
+    print(array4);
+    int array5[] = {25, 73, 88, 95, 78};
+    cout << "\nbefore comb sort:\n";
+    print(array5);
+    combSort(array5);
+    cout << "after comb sort:\n";
+    print(array5);
+    int result = linear_search(array5,95);
+    (result == -1) ? 
+    cout << "Element is not present in array" : 
+    cout << "Element is present at index " << result;
     return 0;
 }
