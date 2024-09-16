@@ -29,31 +29,44 @@ class DLL{
         curr->next = curr->next->next;
         curr->next->next->prev = curr->next;
     }
-    void sortList()
+  void sortList()
+{
+    node* curr, *index, *temp;
+    if(head==NULL) return;
+    for(curr = head; curr->next!=NULL; curr = curr->next)
     {
-        node* curr, *index;
-        if(head==NULL) return;
-        for(curr = head; curr->next!=NULL; curr = curr->next)
+        for (index = curr->next; index!=NULL; index = index->next)
         {
-            for (index = curr->next; index!=NULL; index = index->next)
+            if(curr->data > index->data)
             {
-                if(curr->data > index->data)
-                {
-                    int temp = curr->data;
-                    curr->data = index->data;
-                    index->data = temp;
+                temp = curr->next;
+                curr->next = index->next;
+                index->next = temp;
+                if (curr == head) head = index;
+                else {
+                    node* prev = head;
+                    while (prev->next != curr) prev = prev->next;
+                    prev->next = index;
                 }
-            }
-        }
-        //deleting duplicates
-        for(curr = head; curr->next!=NULL; curr = curr->next)
-        {
-            for (index = curr->next; index!=NULL; index = index->next)
-            {
-                if(curr->data == index->data)deleteVal(index->data);
+                temp = curr;
+                curr = index;
+                index = temp;
             }
         }
     }
+    
+    // Removing duplicates
+    for(curr = head; curr->next!=NULL; )
+    {
+        if(curr->data == curr->next->data)
+        {
+            temp = curr->next;
+            curr->next = curr->next->next;
+            delete temp;
+        }
+        else curr = curr->next;
+    }
+}
     void print()
     {
         node* curr = head;
