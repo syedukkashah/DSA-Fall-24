@@ -1,6 +1,6 @@
 #include "iostream"
 using namespace std;
-void selectionSort(int* arr, int size)
+void selectionSort(int* arr, int size) //O(n²)
 {
     for (size_t i = 0; i < size; i++)
     {
