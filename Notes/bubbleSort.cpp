@@ -9,10 +9,17 @@ void swap(int* a, int* b)
 }
 void bubbleSort(int* arr, int size)
 {
-    for (size_t i = 0; i < size-1; i++){ 
+    bool swapFlag = false;
+    for (size_t i = 0; i < size - 1; i++){
+        swapFlag = false; //reset flag for each iteration
         for (size_t j = 0; j < size - i - 1; j++){
-            if(arr[j]>arr[j+1]) swap(arr[j], arr[j+1]);
+            if(arr[j]>arr[j+1])
+            { 
+                swap(arr[j], arr[j+1]);
+                swapFlag = true;
+            }
         }
+        if (!swapFlag) break; //if no swaps were made, the array is sorted
     }
 }
 int main()
