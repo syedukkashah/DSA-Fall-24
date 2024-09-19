@@ -7,7 +7,7 @@ void swap(int* a, int* b)
     b = temp;
     delete temp;
 }
-void bubbleSort(int* arr, int size)
+void bubbleSort(int* arr, int size) //O(n²)
 {
     bool swapFlag = false;
     for (size_t i = 0; i < size - 1; i++){
