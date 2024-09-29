@@ -1,5 +1,6 @@
 #include "iostream"
 #include "cctype"
+#include "algorithm" // for reverse()
 using namespace std;
 class Stack {
     int top;
@@ -30,34 +31,28 @@ public:
             return 0;
         }
     }
-    void print() {
-        for (int i = 0; i <= top; i++) cout << arr[i] << " ";
-    }
 };
 int precedence(char op) {
     if (op == '+' || op == '-') return 1;
     if (op == '*' || op == '/') return 2;
+    if (op == '^') return 3; // Exponent has the highest precedence
     return 0;
 }
-int main() {
-    string infix = "(100 * (2 + 12)) / 14";
-    string output = ""; 
+// Function to convert infix to postfix
+string infix_to_postfix(string &infix) {
+    string output = "";
     Stack s(infix.size());
-
     for (char c : infix) {
-        if (isalnum(c)) {
-            output += c;
-        }
-        else if (c == '(') {
+        if (isalnum(c)) { 
+            output += c; // Operand goes directly to output
+        } else if (c == '(') {
             s.push(c);
-        }
-        else if (c == ')') {
+        } else if (c == ')') {
             while (!s.isEmpty() && s.peek() != '(') {
                 output += s.pop();
             }
-            s.pop(); 
-        }
-        else if (c == '+' || c == '-' || c == '*' || c == '/') {
+            s.pop(); // Pop '(' from the stack
+        } else { // Operator encountered
             while (!s.isEmpty() && precedence(s.peek()) >= precedence(c)) {
                 output += s.pop();
             }
@@ -65,9 +60,33 @@ int main() {
         }
     }
     while (!s.isEmpty()) {
-        output += s.pop();
+        output += s.pop(); // Pop remaining operators
     }
+    return output;
+}
+// Function to convert infix to prefix
+string infix_to_prefix(string &infix) {
+    // Step 1: Reverse the infix expression
+    reverse(infix.begin(), infix.end());
+    // Step 2: Replace '(' with ')' and vice versa
+    for (size_t i = 0; i < infix.size(); i++) {
+        if (infix[i] == '(') infix[i] = ')';
+        else if (infix[i] == ')') infix[i] = '(';
+    }
+    // Step 3: Get postfix of the modified expression
+    string postfix = infix_to_postfix(infix);
+    // Step 4: Reverse the postfix expression to get the final prefix expression
+    reverse(postfix.begin(), postfix.end());
+    return postfix;
+}
+int main() {
+    string infix = "K+L-M*N+(O^P)*W/U/V*T+Q";   
     cout << "Infix Expression: " << infix << endl;
-    cout << "Postfix Expression: " << output << endl;
+    // Convert infix to postfix
+    string postfix = infix_to_postfix(infix);
+    cout << "Postfix Expression: " << postfix << endl;
+    // Convert infix to prefix
+    string prefix = infix_to_prefix(infix);
+    cout << "Prefix Expression: " << prefix << endl;
     return 0;
 }
