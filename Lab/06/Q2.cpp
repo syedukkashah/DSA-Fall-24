@@ -1,5 +1,5 @@
 #include "iostream"
-#include "cctype"
+#include "cctype"  //for isalnum(), check for digit & variable
 #include "algorithm" // for reverse()
 using namespace std;
 class Stack {
