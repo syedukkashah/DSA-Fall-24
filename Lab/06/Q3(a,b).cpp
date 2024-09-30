@@ -8,7 +8,6 @@ class TicketQueue{
         arr = new int[n];
         front= -1;
         rear = -1;
-
     }
     void push()
     {
@@ -51,7 +50,7 @@ int main() {
     for (size_t i = 0; i < 5; i++) q.pop();
     cout<<q.peek()<<endl;;
     for (size_t i = 0; i < 5; i++) q.push();
-    q.peek();
+    cout<<q.peek()<<endl;
     return 0;
 }
 /*Q3(b) after removing the first 5 passengers, more passengers can't be added even though there are
