@@ -13,7 +13,8 @@ public:
 class TicketQueue
 {
     node *front, *rear;
-    int passengers = 0;
+    int currentPassengerNumber = 0;  
+    int queueSize = 0;               
 public:
     TicketQueue() : front(NULL), rear(NULL) {}
     bool isEmpty() const
@@ -22,25 +23,26 @@ public:
     }
     void enqueue()
     {
-        if (passengers == 10)
+        if (queueSize == size)
         {
             cout << "Queue overflow" << endl;
             return;
         }
-        passengers++;
-        node *x = new node(passengers);
+        currentPassengerNumber++;
+        node *x = new node(currentPassengerNumber);
         if (isEmpty())
         {
             front = x;
             rear = x;
-            cout<<"Passenger "<<passengers<<" added to queue"<<endl;
+            cout<<"Passenger "<<currentPassengerNumber<<" added to queue"<<endl;
             return;
         }
         else
         {
-            x->next = rear;
+            rear->next = x;
             rear = x;
-            cout<<"Passenger "<<passengers<<" added to queue"<<endl;
+            cout<<"Passenger "<<currentPassengerNumber<<" added to queue"<<endl;
+            queueSize++;
         }
     }
     void dequeue()
@@ -53,12 +55,12 @@ public:
         else
         {
             node *temp = front;
-            front = temp->next;
+            front = front->next;
             if (!front)
                 rear = NULL;
             cout<<"Passenger "<<temp->data<<" dequeued"<<endl;
             delete temp;
-            passengers--;
+            queueSize--;
         }
     }
     int peek()
