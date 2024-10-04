@@ -1,31 +1,27 @@
 #include "iostream"
 using namespace std;
-void swap(int* a, int* b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
-int getMax(int arr[], int n) {
-    int max = 0;
-    for (int i=1; i<n; i++) {
-        if (arr[i] > arr[max])
-            max = i;
+#define SIZE 5
+int* REVERSE(int* arr)
+{
+    for (size_t i = 0; i <= SIZE/2; i++)
+    {
+        int temp = arr[SIZE-i-1];
+        arr[SIZE-i-1] = arr[i];
+        arr[i] = temp;
     }
-    return max;
+    return arr;  
 }
-void recursiveSort(int arr[], int n) {
-    if (n == 1)
-        return;
-    int max = getMax(arr, n);
-    swap(&arr[n-1], &arr[max]);
-    recursiveSort(arr, n-1);
+int* reverse(int size, int* arr, int i)
+{
+    if(i == size / 2)return arr;
+    int temp = arr[size - i - 1];
+    arr[size-i-1] = arr[i];
+    arr[i] = temp;
+    return reverse(size, arr, i+1);
 }
-
 int main()
 {
-    int arr[5] = {5,3,4,2,1};
-    for (size_t i = 0; i < 5; i++) cout<<arr[i]<<" ";
-    recursiveSort(arr, 5);
-    for (size_t i = 0; i < 5; i++) cout<<arr[i]<<" ";
+    int arr[SIZE] = {1, 2, 3, 4, 5};
+    reverse(5,arr,0);
+    for (size_t i = 0; i < 5; i++) cout<<arr[i]<<endl;
 }
