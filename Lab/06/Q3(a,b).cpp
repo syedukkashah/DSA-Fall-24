@@ -55,4 +55,6 @@ int main() {
 }
 /*Q3(b) after removing the first 5 passengers, more passengers can't be added even though there are
 available spaces at the front of the array. Since queue is linear, rear ptr doesn't wrap around to 
-reuse the freed spaces at the front*/
+reuse the freed spaces at the front. To solve this, we need to implement a circular queue. 
+In a circular queue, the rear pointer wraps around to the beginning of the array when it reaches the end, 
+allowing us to reuse the freed space at the front.*/
