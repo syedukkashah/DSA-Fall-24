@@ -71,4 +71,5 @@ int main()
     if(!q.isEmpty()){
         cout << x << " ";
     }
+    return 0;
 }
