@@ -1,65 +1,62 @@
 #include "iostream"
 using namespace std;
-class Node{ 
+class Node{
     Node* next;
     int data;
     public:
-    Node(int val = 0):data(val){}
+    Node(const int d):data(d), next(nullptr){}
     friend class Stack;
 };
-class Stack
-{
+class Stack{
     Node* head;
     public:
-    Stack(): head(NULL){}
-    bool isEmpty()
-    {
-        return head == NULL;
+    Stack():head(nullptr){}
+    bool isEmpty() const{
+        return head == nullptr;
     }
-    void push(const int d){
-        Node* n = new Node(d);
-        if(!n){ 
-            cout<<"Stack overflow"<<endl;
+    void push(const int val)
+    {
+        Node* newNode = new Node(val);
+        if (isEmpty())
+        {
+            head = newNode;
             return;
         }
-        n->next = head;
-        head = n;
-        cout<<"pushed "<< n->data <<" onto the stack"<<endl;
+        newNode->next = head;
+        head = newNode;
+        cout<<"pushed "<<newNode->data<<" onto the stack"<<endl;
     }
     void pop()
     {
-        if(isEmpty()) cout<<"Stack underflow"<<endl;
-        else{
-            Node* temp = head;
-            cout<<"popped "<<temp->data<<" from the stack"<<endl;
-            head = head->next;
-            delete temp;
+        if(isEmpty())
+        {
+            cout<<"stack underflow "<<endl;
+            return;
         }
+        Node* temp = head;
+        head = head->next;
+        cout<<"popped "<<temp->data<<" from the stack"<<endl;
+        delete temp;
     }
-    int peek()
-    {
-        if(!isEmpty()) return head->data;
-        else cout<<"Stack is empty"<<endl;
-        return -1;
+    int peek() const{
+        if(isEmpty()) return -1;
+        return head->data;
     }
 };
 int main()
 {
     Stack s;
+    s.pop();
     s.push(2);
     s.push(4);
-    s.push(5);
-    s.push(3);
+    s.push(6);
     s.push(8);
-    s.push(2); 
+    cout<<s.peek()<<endl;
+    s.pop();
+    s.pop();
     cout<<s.peek()<<endl;
     s.pop();
     s.pop();
     s.pop();
     cout<<s.peek()<<endl;
-    s.pop();
-    s.pop();
-    s.pop();
-    s.pop();
-    return 0;
 }
