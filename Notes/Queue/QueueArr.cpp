@@ -6,7 +6,7 @@ class Queue{
     Queue(int n):arr(new int[n]), front(-1), rear(-1), size(n){}
     ~Queue(){delete[] arr;}
     bool isEmpty() const{
-        return front == -1;
+        return front == -1 || front > rear;
     }
     bool isFull() const{
         return rear == size -1;
