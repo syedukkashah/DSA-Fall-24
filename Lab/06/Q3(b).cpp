@@ -4,59 +4,91 @@ reuse the freed spaces at the front. To solve this, we need to implement a circu
 In a circular queue, the rear pointer wraps around to the beginning of the array when it reaches the end, 
 allowing us to reuse the freed space at the front.*/
 
-#include "iostream"
-#define n 10
+#include <iostream>
 using namespace std;
-class TicketQueue {
-    int *arr, front, rear, passengers = 0, size = 0;
+
+class Ticket{
+    int *arr;
+    int passenger;
+    int size;
+    int front;
+    int rear;
+
 public:
-    TicketQueue() {
-        arr = new int[n];
+    Ticket(){
+        size = 10;
+        arr = new int[size];
+        passenger = 0;
         front = -1;
         rear = -1;
     }
-    void push() {
-        if (size == n) {  
-            cout << "queue overflow" << endl;
-            return;
+
+    ~Ticket(){
+        delete[] arr;
+    }
+
+    bool isEmpty(){
+        return front == -1;
+    }
+
+    bool isFull(){
+        return (rear + 1) % size == front;
+    }
+
+    void push(){
+        if (isEmpty()){
+            front = rear = 0;
+            passenger++;
+            arr[rear] = passenger;
         }
-        rear = (rear + 1) % n;
-        arr[rear] = ++passengers;
-        size++;
-        if (front == -1) {  
-            front = rear;
+        else if (isFull()){
+            cout << "Queue overflow" << endl;
+        }
+        else{
+            rear = (rear + 1) % size;
+            passenger++;
+            arr[rear] = passenger;
         }
     }
-    void pop() {
-        if (size == 0) {  
-            cout << "queue is empty" << endl;
-            return;
+
+    void pop(){
+        if (isEmpty()){
+            cout << "Queue underflow" << endl;
         }
-        front = (front + 1) % n;
-        size--;
-        passengers--;
+        else{
+            if (front == rear){
+                front = rear = -1; 
+            }
+            else{
+                front = (front + 1) % size;
+            }
+        }
     }
-    int peek() {
-        if (size == 0) {  
-            cout << "queue is empty" << endl;
+
+    int peek(){
+        if (isEmpty()){
+            cout << "Queue Underflow" << endl;
             return -1;
         }
-        return arr[front];
+        else{
+            return arr[front];
+        }
     }
 
-    bool isEmpty() {
-        return size == 0;
+    void print(){
+        if (!isEmpty()){
+            cout << "Queue: ";
+            int i = front;
+            while(true){
+                cout << arr[i] << " ";
+                if (i == rear) 
+                    break; 
+                i = (i + 1) % size;  
+            }
+            cout << endl;
+        }
+        else{
+            cout << "Queue is empty." << endl;
+        }
     }
 };
-
-int main() {
-    TicketQueue q;
-    for (size_t i = 0; i < 10; i++) q.push();
-    cout << q.peek() << endl;
-    for (size_t i = 0; i < 5; i++) q.pop();
-    cout << q.peek() << endl;
-    // Add 5 more passengers (wrap around)
-    for (size_t i = 0; i < 5; i++) q.push();
-    cout << q.peek() << endl;
-    return 0;
-}
