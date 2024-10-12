@@ -11,7 +11,7 @@ class Node{
     friend class Queue;
 };
 class Queue{ //we insert from tail in queue, pop from front
-    Node *front, *rear;
+    Node *front, *rear; //rear is the tail, front is the head
     public:
     Queue():front(NULL), rear(NULL){}
     bool isEmpty() const{
@@ -27,7 +27,7 @@ class Queue{ //we insert from tail in queue, pop from front
         }
         else{
             rear->next = new Node(d); 
-            rear = rear->next;
+            rear = rear->next; //we adjust the rear (tail) here
             cout<<"pushed "<<d<<" into the queue"<<endl;
         }
     }
@@ -44,9 +44,9 @@ class Queue{ //we insert from tail in queue, pop from front
             front = rear = NULL;
             return;
         }
-        Node* temp = front;
+        Node* temp = front; 
         cout<<"dequeued "<<front->data<<" from the queue"<<endl;
-        front = front->next;
+        front = front->next; //head is adjusted here
         delete temp;
     }
     const int peek()
