@@ -533,10 +533,6 @@ class TicketResolutionLog{
             curr = curr->next;
         }
     }
-    int peek() const{
-        if(isEmpty()) return -1;
-        return head->ID;
-    }
 };
 class PendingTicketQueue{//we insert from tail in queue, pop from front
     Ticket *front, *rear; //rear is the tail, front is the head
@@ -568,7 +564,7 @@ class PendingTicketQueue{//we insert from tail in queue, pop from front
         }
         
     }
-   void dequeueTicket() //dequeue fucntion
+   void dequeueTicket() //dequeue function
 { 
     if(isEmpty()) 
     { 
