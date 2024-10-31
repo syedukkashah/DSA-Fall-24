@@ -518,18 +518,6 @@ class TicketResolutionLog{
         head = t;
         cout << "Transaction logged: Ticket ID " << ticketID << " closed." << endl;
     }
-    void pop()
-    {
-        if(isEmpty())
-        {
-            cout<<"stack underflow "<<endl;
-            return;
-        }
-        TicketID* temp = head;
-        head = head->next;
-        cout<<"popped Ticket with ID"<<temp->ID<<" from the stack"<<endl;
-        delete temp;
-    }
     void viewLogs()
     {
         cout << "Resolution Logs (most recent first):" << endl;
