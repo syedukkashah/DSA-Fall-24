@@ -1,3 +1,0 @@
-default_sort=insertion
-default_search=binary
-threshold=10
