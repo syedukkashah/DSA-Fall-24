@@ -580,7 +580,7 @@ class PendingTicketQueue{//we insert from tail in queue, pop from front
         }
         
     }
-   void dequeueTicket() 
+   void dequeueTicket() //dequeue fucntion
 { 
     if(isEmpty()) 
     { 
@@ -595,21 +595,11 @@ class PendingTicketQueue{//we insert from tail in queue, pop from front
     } 
     else 
     { 
-        cout << "Dequeued Ticket with ID: " << ticket->getID() << " from the queue" << endl; 
+        cout << "Dequeued Ticket with ID: " << ticket->getID() << " from the queue\n" << endl; 
         front = front->next; // Move the front to the next ticket
     }
-    // delete ticket;
 }
-    Ticket* peek()
-    {
-        if(isEmpty())
-        {
-            cout << "No tickets in pending queue." << endl;
-            return NULL;
-        }
-        return front;
-    }
-    void viewPendingTickets() const{
+    void viewPendingTickets() const{ //function used to view all the tickets in the queue
         cout << "Pending Tickets:" << endl;
         if (isEmpty()) {
             cout << "No pending tickets." << endl;
@@ -664,13 +654,8 @@ class Agent{
         cout << "Assigned Tickets:" << endl;
         ticketList.printList();
     }
-     int getTotalTickets()
-     {
-        return totalTickets;
-     }
-    static int getNumAgents() {
-        return numAgents;
-    }
+    int getTotalTickets(){return totalTickets;}
+    static int getNumAgents(){return numAgents;}
 };
 int Agent:: numAgents;
 class AgentManagement{
@@ -710,7 +695,7 @@ class AgentManagement{
         Ticket* ticketToAssign = curr;
         bool assigned = false; // Flag to check if the ticket was assigned
         for (int j = 0; j < size; j++) {
-            if (getAgents()[j]->isAvailable()) { // Check if the agent is available
+            if (getAgents()[j]->isAvailable()) { // Check if the agent is available and if the ticket status is open
                 bool flag = agents[j]->assignTicket(ticketToAssign, pq, rl);
                 if(flag) assigned = true;
             }
@@ -722,8 +707,8 @@ class AgentManagement{
         }
         curr = tickets.getNext(curr);
      }
-    }
-    void displayAgents() {
+    } 
+    void displayAgents() { //displays how many tickets each agent has and general info about the agent
         cout << "Agent Ticket Load:" << endl;
         for (int i = 0; i < agentCount; i++) {
             agents[i]->printAgent();
@@ -733,14 +718,14 @@ class AgentManagement{
     }
     
 };
-void applySortingFromConfig(List &tickets, int criteria) {
+void applySortingFromConfig(List &tickets, int criteria) { //function reads the config file & applies appropriate sorting algorithm
     // Open config.txt
-    ifstream configFile("config.txt");
+    ifstream configFile("C:/Users/Hp/OneDrive/Desktop/config.txt");
     if (!configFile) {
         cerr << "Error opening configuration file!" << std::endl;
         return;
     }
-    cout<<"Config file opened successfully"<<endl;
+    cout<<"Config file opened successfully\n"<<endl;
     string line, default_sort;
     int threshold = 10; // Default threshold if not found in file
     // Parse the config file for settings
@@ -765,8 +750,8 @@ void applySortingFromConfig(List &tickets, int criteria) {
         tickets.sortTickets(criteria); // Use merge sort if number of tickets exceed the threshold set in config file
     }
 }
-Ticket* applySearchingFromConfig(List& tickets, int ID) {
-    ifstream configFile("config.txt");
+Ticket* applySearchingFromConfig(List& tickets, int ID) { //function reads the config file & applies appropriate searching algorithm
+    ifstream configFile("C:/Users/Hp/OneDrive/Desktop/config.txt");
     if (!configFile.is_open()) { //exception handling for potential file handling errors
         throw runtime_error("Could not open config file.");
     }
@@ -796,22 +781,20 @@ Ticket* applySearchingFromConfig(List& tickets, int ID) {
     return t;
    } 
     return nullptr;
-
 }
-
 int main() {
      List tickets;
     TicketResolutionLog resolutionLog;
     PendingTicketQueue pendingQueue;
     AgentManagement agentManagement;
-    /* Adding tickets (Added 11 tickets which exceeds the threshold (10) that has been set in the config file, 
+    /* Adding tickets (Added 14 tickets which exceeds the threshold (10) that has been set in the config file, 
     hence, merge sort will be used to sort tickets by the criteria of user's choice) */
     tickets.addTicket(3, 5, "Login issues", "2023-10-01 12:00", "17:00", "Alice", true);
     tickets.addTicket(1, 2, "Inquiry about service", "2023-10-02 13:00", "18:00", "Charlie", true);
     tickets.addTicket(2, 4, "Password reset", "2023-10-03 14:00", "15:30", "Bob", true);
     tickets.addTicket(1, 1, "Account locked", "2023-10-04 10:00", "11:00", "Eve", true);
     tickets.addTicket(2, 8, "Billing question", "2023-10-05 09:00", "10:00", "Mallory", true);
-    tickets.addTicket(3, 7, "Technical support", "2023-10-06 08:00", "09:00", "Trent", false);
+    tickets.addTicket(3, 7, "Technical support", "2023-10-06 08:00", "09:00", "Trent", false);  //added some closed tickets to showcase how they aren't considered when adding tickets
     tickets.addTicket(1, 3, "Upgrade inquiry", "2023-10-07 16:00", "17:00", "Oscar", false);
     tickets.addTicket(2, 6, "Refund request", "2023-10-08 15:00", "16:00", "Dave", true);
     tickets.addTicket(1, 9, "Subscription query", "2023-10-09 14:00", "15:00", "Rob", true);
@@ -822,39 +805,42 @@ int main() {
     tickets.addTicket(3, 13, "Technical query", "2023-10-13 12:45", "13:00", "Diego", true);
     
     tickets.printList();
-
+    cout<<"-------------------------------------------\n"<<endl;
     tickets.printOpenTickets();
-
+    cout<<"-------------------------------------------\n"<<endl;
     applySortingFromConfig(tickets, 1); //  sorting by: (1) priority, (2) creation time, (3) customer name
-  
+   
     tickets.printList();
-    
+    cout<<"-------------------------------------------\n"<<endl;
     pendingQueue.addTickets(tickets); //adding tickets to queue after they have been sorted by priority & creation time
 
     // Adding agents
-   
-    agentManagement.addAgent("Smith");
+    cout<<"-------------------------------------------\n"<<endl;
+    agentManagement.addAgent("Smith"); 
     agentManagement.addAgent("Johnson");
 
     // Assign tickets to agents
     // Loop through the tickets and assign them to agents
-    agentManagement.assignTickets(tickets, pendingQueue, resolutionLog);
+    cout<<"-------------------------------------------\n"<<endl;
+    agentManagement.assignTickets(tickets, pendingQueue, resolutionLog); //(All agents have a limit of 5 tickets)
 
-    Ticket* searchExample = applySearchingFromConfig(tickets, 2);  //searching ticket to show searching algorithm functionality
+    Ticket* searchExample = applySearchingFromConfig(tickets, 2);  //searching ticket to show searching algorithm functionality (since ID 2 was present in the list but is now closed, it will not find Ticket ID 2)
     if(!searchExample) cout<<"Ticket was either closed or ID was not found"<<endl;
     else cout<<"Ticket ID: "<<searchExample->getID()<<" was found"<<endl; 
-    
+    cout<<"-------------------------------------------\n"<<endl;
     agentManagement.sortAgentsByTickets();
+    cout<<"-------------------------------------------\n"<<endl;
     agentManagement.displayAgents();
+    cout<<"-------------------------------------------\n"<<endl;
     // View resolution logs
     resolutionLog.viewLogs();
-
+    cout<<"-------------------------------------------\n"<<endl;
     // View pending tickets
     pendingQueue.viewPendingTickets();
     
     searchExample = applySearchingFromConfig(tickets, 10);
      if(!searchExample) cout<<"Ticket was either closed or ID was not found"<<endl;
-    else cout<<"Ticket ID: "<<searchExample->getID()<<" was found"<<endl; //Since Ticket with ID 10 is pending, it will be found by the appropriate searching algorithm
+    else cout<<"Ticket ID: "<<searchExample->getID()<<" was found"<<endl; //Since Ticket with ID 10 is pending (status:open), it will be found by the appropriate searching algorithm 
     return 0;
 }
 
@@ -865,9 +851,12 @@ Time Complexity Analysis:
 - Searching for a ticket: O(n) as we traverse the list.
 - Printing the list: O(n).
 - Assigning a ticket: O(n) for searching the ticket and O(1) for adding it to the agent's list if found.
+- Adding Agents: O(1) per agent, O(m) for m agents
+- Sorting Agents: O(m log m)
+- Displaying Agents: O(m)
 - Logging a resolution: O(1).
 - Viewing logs: O(n).
 - Managing the pending queue: O(1) for enqueue, O(1) for dequeue.
+- Viewing Pending Tickets: O(p)
 */
-
 
