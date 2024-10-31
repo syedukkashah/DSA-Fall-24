@@ -599,11 +599,10 @@ class PendingTicketQueue{//we insert from tail in queue, pop from front
 };
 class Agent{
     static int numAgents;
-    int ID;
+    int ID, totalTickets;
     string name;
     bool availability;
     List ticketList;
-    int totalTickets;
     public:
     Agent(string n) : name(n), availability(true), ID(numAgents++), totalTickets(0){}
     bool assignTicket(Ticket* t, PendingTicketQueue& pq, TicketResolutionLog &rl) {
