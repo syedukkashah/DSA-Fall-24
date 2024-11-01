@@ -121,14 +121,13 @@ bool isSortedByID = false; //to ensure tickets are sorted by ID only once in sea
             }
             return slow;
         }
-        Ticket* searchTicket_binary(int ID)//applying interpolation search
+Ticket* searchTicket_binary(int ID)//applying interpolation search
         {
             if(!isSortedByID)
-    {
-        sortByID(); // Ensure the list is sorted
-        isSortedByID = true;
-    }
-      
+            {
+                sortByID(); // Ensure the list is sorted
+                isSortedByID = true;
+            }
             Ticket* start = head;
             Ticket* end = nullptr;
             while(true){
@@ -154,9 +153,7 @@ Ticket* searchTicket_interpolation(int ID) { //applying interpolation search
     Ticket* high = head;
 
     // Traverse to find the last Ticket
-    while (high->next) {
-        high = high->next;
-    }
+    while (high->next)high = high->next;
 
     while (low && high && low->getID() <= ID && high->getID() >= ID) {
         // Check if low and high are the same (avoid division by zero)
@@ -204,14 +201,9 @@ Ticket* searchTicket_interpolation(int ID) { //applying interpolation search
             cout << "Ticket not found" << endl;
             return;
         }
-        if (ticket->prev) {
-            ticket->prev->next = ticket->next;
-        } else {
-            head = ticket->next; 
-        }
-        if (ticket->next) {
-            ticket->next->prev = ticket->prev;
-        }
+        if (ticket->prev)ticket->prev->next = ticket->next;
+         else head = ticket->next; 
+        if (ticket->next)ticket->next->prev = ticket->prev;
         delete ticket;
         cout << "Removed Ticket with ID: " << ID << " from the list" << endl;
         Ticket::numTickets--;
@@ -280,11 +272,8 @@ void insertionSort(int criteria) {
         }
 
         // Insert `curr` in sorted list
-        if (prev) {
-            prev->next = curr;
-        } else {
-            sorted = curr; // New head of sorted list
-        }
+        if (prev) prev->next = curr;
+        else sorted = curr; // New head of sorted list
         curr->next = pos;
         curr = next; // Move to the next Ticket
     }
@@ -316,16 +305,11 @@ void selectionSort(int criteria) {
                 condition = (nextTicket->getName() < minTicket->getName());
             }
 
-            if (condition) {
-                minTicket = nextTicket;
-            }
+            if (condition) minTicket = nextTicket;
             nextTicket = nextTicket->next;
         }
-
         // Swap data between curr and minTicket if necessary
-        if (minTicket != curr) {
-            swapTicketData(curr, minTicket);
-        }
+        if (minTicket != curr) swapTicketData(curr, minTicket);
         curr = curr->next;
     }
     string criteriaType;
@@ -334,7 +318,6 @@ void selectionSort(int criteria) {
     if(criteria == 3) criteriaType = "customer name";
     cout << "Tickets sorted by " << criteriaType << " using selection sort." << endl;
 }
-
 // Helper function to swap the data between two Ticket Tickets
 void swapTicketData(Ticket* a, Ticket* b) {
     swap(a->ID, b->ID);
@@ -393,8 +376,7 @@ Ticket* merge(Ticket* left, Ticket* right, int criteria) {
 
 // Split the linked list into two halves
 void split(Ticket* source, Ticket** frontRef, Ticket** backRef) {
-    Ticket* fast;
-    Ticket* slow;
+    Ticket* fast, *slow;
     slow = source;
     fast = source->next;
 
@@ -406,7 +388,6 @@ void split(Ticket* source, Ticket** frontRef, Ticket** backRef) {
             fast = fast->next;
         }
     }
-
     // Split the list at the middle
     *frontRef = source;
     *backRef = slow->next;
@@ -420,21 +401,15 @@ void mergeSort(Ticket** headRef, int criteria) {
     Ticket* right;
 
     // Base case: if the list is empty or has one Ticket
-    if (!head || !head->next) {
-        return;
-    }
-
+    if (!head || !head->next) return;
     // Split the list into halves
     split(head, &left, &right);
-
     // Recursively sort the two halves
     mergeSort(&left, criteria);
     mergeSort(&right, criteria);
-
     // Merge the sorted halves
     *headRef = merge(left, right, criteria);
 }
-
 // Wrapper function for mergeSort
 void sortTickets(int criteria) {
     mergeSort(&head, criteria);
@@ -444,7 +419,6 @@ void sortTickets(int criteria) {
     if(criteria == 3) criteriaType = "customer name";
     cout << "Tickets sorted by  " << criteriaType << " using merge sort." << endl;
 }
-
     void printList() {
         Ticket* curr = head;
         while (curr) {
@@ -474,22 +448,10 @@ void sortTickets(int criteria) {
             curr = curr->next;
         }
     }
-    Ticket* getHead()
-    {
-        return head;
-    }
-    Ticket* getNext(Ticket* t)
-    {
-        return t->next;
-    }
-    static int getNumTickets()
-    {
-        return Ticket::numTickets;
-    }
-    int getID(Ticket* t)
-    {
-        return t->ID;
-    }
+    Ticket* getHead(){return head;}
+    Ticket* getNext(Ticket* t){return t->next;}
+    static int getNumTickets(){return Ticket::numTickets;}
+    int getID(Ticket* t){return t->ID;}
 };
 class TicketID{
     TicketID* next;
@@ -502,9 +464,7 @@ class TicketResolutionLog{
     TicketID* head;
     public:
     TicketResolutionLog():head(nullptr){}
-    bool isEmpty() const{
-        return head == nullptr;
-    }
+    bool isEmpty() const{return head == nullptr;}
     void logResolution(int ticketID) //pushing ID
     {
         TicketID* t = new TicketID(ticketID);
@@ -538,9 +498,7 @@ class PendingTicketQueue{//we insert from tail in queue, pop from front
     Ticket *front, *rear; //rear is the tail, front is the head
     public:
     PendingTicketQueue():front(NULL), rear(NULL){}
-    bool isEmpty() const{
-        return front == NULL;
-    }
+    bool isEmpty() const{return front == NULL;}
     void addTickets(List& t) //enqueue function
     {
         Ticket* curr = t.getHead();
@@ -565,23 +523,23 @@ class PendingTicketQueue{//we insert from tail in queue, pop from front
         
     }
    void dequeueTicket() //dequeue function
-{ 
-    if(isEmpty()) 
-    { 
-        cout << "No tickets in pending queue." << endl; 
-        return; 
-    } 
-    Ticket* ticket = front; // Get the ticket at the front
-    if(front == rear) 
-    { 
-        cout << "Dequeued Ticket with ID: " << ticket->getID() << " from the queue" << endl; 
-        front = rear = NULL; 
-    } 
-    else 
-    { 
-        cout << "Dequeued Ticket with ID: " << ticket->getID() << " from the queue\n" << endl; 
-        front = front->next; // Move the front to the next ticket
-    }
+   { 
+        if(isEmpty()) 
+        { 
+            cout << "No tickets in pending queue." << endl; 
+            return; 
+        } 
+        Ticket* ticket = front; // Get the ticket at the front
+        if(front == rear) 
+        { 
+            cout << "Dequeued Ticket with ID: " << ticket->getID() << " from the queue" << endl; 
+            front = rear = NULL; 
+        } 
+        else 
+        { 
+            cout << "Dequeued Ticket with ID: " << ticket->getID() << " from the queue\n" << endl; 
+            front = front->next; // Move the front to the next ticket
+        }
 }
     void viewPendingTickets() const{ //function used to view all the tickets in the queue
         cout << "Pending Tickets:" << endl;
@@ -611,15 +569,12 @@ class Agent{
         cout << name << " is now unavailable." << endl;
         return false;
     }
-
     if (availability && t->isOpen()) {
         // Create a new ticket using the copy constructor
         Ticket* newTicket = new Ticket(*t);
-        
         ticketList.addTicket(newTicket->getPriority(), newTicket->getID(), newTicket->getServiceRequestDescription(), 
                              newTicket->getTimestamp(), newTicket->getCloseTime(), newTicket->getName(), 
                              newTicket->isOpen());
-
         cout << "Assigned Ticket ID " << t->getID() << " to Agent " << name << endl;
         // Log the resolution of the original ticket
         rl.logResolution(t->getID()); // Log the closed ticket
@@ -683,11 +638,8 @@ class AgentManagement{
                 if(flag) assigned = true;
             }
         }
-        
         if(!flag) continue;
-        if (!assigned) {
-            cout << "No available agents for Ticket ID " << ticketToAssign->getID() << ".\n";
-        }
+        if (!assigned) cout << "No available agents for Ticket ID " << ticketToAssign->getID() << ".\n";
         curr = tickets.getNext(curr);
      }
     } 
@@ -703,7 +655,7 @@ class AgentManagement{
 };
 void applySortingFromConfig(List &tickets, int criteria) { //function reads the config file & applies appropriate sorting algorithm
     // Open config.txt
-    ifstream configFile("C:/Users/Hp/OneDrive/Desktop/config.txt");
+    ifstream configFile("config.txt");
     if (!configFile) {
         cerr << "Error opening configuration file!" << std::endl;
         return;
@@ -734,7 +686,7 @@ void applySortingFromConfig(List &tickets, int criteria) { //function reads the 
     }
 }
 Ticket* applySearchingFromConfig(List& tickets, int ID) { //function reads the config file & applies appropriate searching algorithm
-    ifstream configFile("C:/Users/Hp/OneDrive/Desktop/config.txt");
+    ifstream configFile("config.txt");
     if (!configFile.is_open()) { //exception handling for potential file handling errors
         throw runtime_error("Could not open config file.");
     }
