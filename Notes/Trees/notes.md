@@ -67,6 +67,8 @@ A tree is a non linear data structure that stimulates a hierarchal tree structur
 
 
 **BST**
+
+
 Binary search tree is a tree DS, in which the values in the left sub trees of every node are smaller & the values in the right sub trees of every node are larger.
 
 
