@@ -2,7 +2,11 @@ A tree is a non linear data structure that stimulates a hierarchal tree structur
 & sub trees of children w/ parent node, represented as set of linked nodes.
 
 -Root is a special node in a tree, entire tree is referenced through it
+
+
 -Parent Node = immediate predecessor of a node
+
+
 -Child Node = immediate successors of a node
 -Siblings = Nodes w/ same parent
 -Leaf = Last node in tree
