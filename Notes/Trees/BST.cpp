@@ -66,8 +66,23 @@ class BST{
         printPostOrder(r->right);
         cout<<r->data<<endl;
     }
-
-
-
-
 };
+
+/*
+// In-order traversal to extract odd numbers from a BST and store in a vector
+void extractOdds(Node* root, vector<int>& oddNumbers) {
+if (!root) return;
+extractOdds(root->left, oddNumbers);
+if (root->data % 2 != 0) {
+oddNumbers.push_back(root-&gt;data);
+}
+extractOdds(root-&gt;right, oddNumbers);
+}
+Node* createBSTFromOdds(const vector<int>& oddNumbers) {
+Node* newBST = nullptr;
+for (int number : oddNumbers) {
+newBST = insert(newBST, number);
+}
+return newBST;
+}
+*/
