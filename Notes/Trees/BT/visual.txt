@@ -1,0 +1,20 @@
+BT structure after inserting 1,2,3,4,5,10,50
+
+           1
+        /     \
+      2        3
+    /   \     /   
+   4     5   10     
+        / 
+       50
+
+we can nodes in a BT using queue
+1) add root node first 1
+2) add left then right child 1 2 3
+3) if both children of root node are present then dequeue 2 3
+4) traverse root node (front node of queue which is currently 2) and repeat 2) then 3)  3 4 5
+
+queue visualization after 4)
+  3 4 5 10 -> 4 5 10 -> 5 10 -> 5 10 50 -> 10 50 -> 50 -> queue empty
+  
+  
