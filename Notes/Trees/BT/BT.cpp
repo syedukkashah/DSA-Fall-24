@@ -42,6 +42,8 @@ class queue{  //rear = tail, front = head (FIFO)
     }
    }
 };
+
+static int numNodes = 0; //used to calculate number of nodes in size function
 class BT{
     Node* root;
     public:
@@ -80,6 +82,17 @@ class BT{
             inOrder(r->right);
         }
         
+    }
+
+    static int size(Node* r)
+    {
+        if(!r) return numNodes;
+        else{
+            size(r->left);
+            numNodes++; //we can calculate size by using any traversal method, we simply replace the cout with an int incremenet
+            size(r->right);
+        }
+        return numNodes;
     }
     void preOrder(Node* r) //NLR
     {
@@ -141,6 +154,8 @@ int main(){
     tree.preOrder(tree.getRoot());
     cout<<endl;
     tree.levelOrder();
+    cout<<endl;
+    cout<<tree.size(tree.getRoot());
     return 0;
 
 }
