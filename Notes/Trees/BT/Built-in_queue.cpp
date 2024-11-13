@@ -20,7 +20,7 @@ class BT{
                 q.push(root); 
                 while(!q.empty())
                 {
-                    Node* curr = q.front(); //save front of queue before poping
+                    Node* curr = q.front(); //save front of queue before popping
                     q.pop();
                     if(!curr->left){ //if there is no left child, we insert node
                         curr->left = n;
