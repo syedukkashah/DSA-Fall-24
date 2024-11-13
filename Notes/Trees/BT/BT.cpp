@@ -1,4 +1,5 @@
 #include "iostream"
+#include "vector"
 using namespace std;
 class Node{
     public:
@@ -43,7 +44,8 @@ class queue{  //rear = tail, front = head (FIFO)
    }
 };
 
-static int numNodes = 0; //used to calculate number of nodes in size function
+static int numNodes = 0, total = 0; //used to calculate number of nodes in size function as well as total sum
+
 class BT{
     Node* root;
     public:
@@ -89,11 +91,47 @@ class BT{
         if(!r) return numNodes;
         else{
             size(r->left);
-            numNodes++; //we can calculate size by using any traversal method, we simply replace the cout with an int incremenet
+            numNodes++; //we can calculate size by using any traversal method, we simply replace the cout with an int increment
             size(r->right);
         }
         return numNodes;
     }
+    int countNodes(Node* r){
+        if(!r) return 0;
+        else return 1+countNodes(r->left)+countNodes(r->right); //alternate method of counting nodes (traversing root's left & right ST & adding 1 to include root)
+    }
+    void countLeaves(Node* r, int& leaves)
+    {
+        if(!r) return;
+        if(!r->left && !r->right) leaves++; //if a node has no children we increment cnt
+        //we traverse left and right sub-trees
+        countLeaves(r->left, leaves); 
+        countLeaves(r->right, leaves);
+    }
+    void countInternalNodes(Node* r, int& internal)
+    {
+        if(!r) return;
+        if(r->left || r->right) internal++; //if a node has a child we increment count 
+        //we traverse left and right sub-trees
+        countInternalNodes(r->left, internal);
+        countInternalNodes(r->right, internal);
+    }
+    static int sum(Node* r)
+    {
+        if(!r) return total;
+        else{
+            sum(r->left);
+            total+=r->data; //we can calculate sum by using any traversal method
+            sum(r->right);
+        }
+        return total;
+    }
+    int height(Node* r){
+        if(!r) return 0;
+        int a = height(r->left); //height of left sub-tree
+        int b = height(r->right); //height of right sub-tree
+        return 1 + max(a,b); //return the larger height + 1 to accommodate for root 
+    }    
     void preOrder(Node* r) //NLR
     {
         if(r)
@@ -127,6 +165,19 @@ class BT{
             if(n->right)q.enqueue(n->right);
         }
     }
+
+    //https://www.geeksforgeeks.org/largest-value-level-binary-tree/
+    void largestElementPerLevel(vector<int>& largest, Node* r, int depth)
+    {
+        if(!r) return;
+        else{
+            if(depth == largest.size()) largest.push_back(r->data); // if current depth equals size of array it means a node hasn't been encountered at this level so we add current node's val to array
+            else largest[depth] = max(largest[depth], r->data); //if a node has already been encountered at this level, store max element
+            largestElementPerLevel(largest, r->left, depth+1); //traverse left subtree and increase depth
+            largestElementPerLevel(largest, r->right, depth+1); //traverse right subtree and increase depth
+        }
+
+    }
 };
 int main(){
     BT tree;
@@ -137,14 +188,17 @@ int main(){
     tree.addNode(5);
     tree.addNode(10);
     tree.addNode(50);
+    tree.addNode(51);
  /*
-    BT structure after inserting 1,2,3,4,5,10,50
+    BT structure after inserting 1,2,3,4,5,10,50,51
 
            1
         /    \
       2       3
     /   \    /  \ 
    4     5  10   50  
+  /
+51 
 
 */
     tree.inOrder(tree.getRoot());
@@ -155,7 +209,19 @@ int main(){
     cout<<endl;
     tree.levelOrder();
     cout<<endl;
-    cout<<tree.size(tree.getRoot());
+    cout<<tree.size(tree.getRoot())<<endl;
+    cout<<tree.countNodes(tree.getRoot())<<endl;
+    int numLeaves = 0;
+    tree.countLeaves(tree.getRoot(), numLeaves);
+    cout<<numLeaves<<endl;
+    int numInternalNodes = 0;
+    tree.countInternalNodes(tree.getRoot(), numInternalNodes);
+    cout<<numInternalNodes<<endl;
+    cout<<tree.sum(tree.getRoot())<<endl;
+    cout<<tree.height(tree.getRoot())<<endl;
+    vector<int> max;
+    tree.largestElementPerLevel(max, tree.getRoot(), 0);
+    for (int n: max) cout<< n <<" ";
     return 0;
 
 }
