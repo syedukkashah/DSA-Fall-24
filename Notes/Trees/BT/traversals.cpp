@@ -1,5 +1,7 @@
 #include "iostream"
 #include "queue"
+#include "stack"
+#include "vector"
 using namespace std;
 class Node{
     public:
@@ -65,7 +67,6 @@ class BT{
             postOrder(r->right);
             cout<<r->data<<" ";
         }
-        
     }
     void levelOrder()
     {
@@ -79,6 +80,43 @@ class BT{
             if(n->left) q.push(n->left);
             if(n->right)q.push(n->right);
         }
+    }
+    vector<int> zigzag (Node* r) //spiral level order traversal
+    {
+        //we use stacks to print elements in zigzag order since a stack reverses elements when popped (Last in First out)
+        stack <Node*> s1, s2; //we will use 2 stacks, one that stores elements for L to R printing and vice versa.
+        s1.push(r);
+        vector<int> spiral; //this vector stores the node values that we will use to print
+        while(!s1.empty()||!s2.empty())
+        {
+            if(!s1.empty()) //Right to Left (We will use s2 for left to right)
+            {
+                while(!s1.empty()) 
+                {
+                    Node* temp = s1.top(); //we extract the first element in the stack first
+                    s1.pop(); 
+                    spiral.push_back(temp->data);
+                    /*we push children of current node into the 2nd stack.
+                      Since we know we will switch directions in the next level and
+                      children are present in the next level, we will push elements in
+                      the 2nd stack */ 
+                    if(temp->right) s2.push(temp->right); //since s2 us used for LR traversal we push the left child in first since it will reverse the order when popped
+                    if(temp->left) s2.push(temp->left);
+                }
+            }
+            else //we use s1 for right to left
+            {
+                while(!s2.empty())
+                {
+                    Node* temp = s2.top();
+                    s2.pop();
+                    spiral.push_back(temp->data);
+                    if(temp->left) s1.push(temp->left); //LIFO so left child pushed first for right to left traversal
+                    if(temp->right) s1.push(temp->right); 
+                }
+            }
+        }
+        return spiral;
     }
 };
 int main(){
@@ -97,6 +135,8 @@ int main(){
     tree.preOrder(tree.getRoot());
     cout<<endl;
     tree.levelOrder();
+    cout<<endl;
+    vector <int> ZZ = tree.zigzag(tree.getRoot());
+    for(int i: ZZ) cout<<i<<" ";
     return 0;
-
 }

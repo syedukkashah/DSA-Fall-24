@@ -152,7 +152,7 @@ class BT{
         }
         
     }
-    void levelOrder()
+    void levelOrder() //we insert Nodes in level order so here the implementation is the same as insertion 
     {
         queue q;
         q.enqueue(root);
@@ -189,17 +189,15 @@ int main(){
     tree.addNode(10);
     tree.addNode(50);
     tree.addNode(51);
- /*
+/*
     BT structure after inserting 1,2,3,4,5,10,50,51
-
-           1
-        /    \
-      2       3
-    /   \    /  \ 
-   4     5  10   50  
-  /
-51 
-
+               1
+            /    \
+           2      3
+         /   \   /  \ 
+        4     5 10   50  
+      /
+    51 
 */
     tree.inOrder(tree.getRoot());
     cout<<endl;
@@ -223,5 +221,4 @@ int main(){
     tree.largestElementPerLevel(max, tree.getRoot(), 0);
     for (int n: max) cout<< n <<" ";
     return 0;
-
 }

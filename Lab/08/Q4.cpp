@@ -4,9 +4,9 @@
 #include "queue"
 using namespace std;
 class Node{
+    public:
     int data;
     Node* left, *right;
-    public:
     Node(int data):data(data), left(NULL), right(NULL){}
     friend class BT;
 };
@@ -37,41 +37,24 @@ class BT{
             }
         }
     }
-     vector<int> zigzag (Node* r) 
-    {
-        stack <Node*> s1, s2;
-        s1.push(r);
-        vector<int> spiral; 
-        while(!s1.empty()||!s2.empty())
-        {
-            if(!s1.empty()) 
-            {
-                while(!s1.empty()) 
-                {
-                    Node* temp = s1.top(); 
-                    s1.pop(); 
-                    spiral.push_back(temp->data);
-                    if(temp->left) s2.push(temp->left);
-                    if(temp->right) s2.push(temp->right);
-                }
-            }
-            else
-            {
-                while(!s2.empty())
-                {
-                    Node* temp = s2.top();
-                    s2.pop();
-                    spiral.push_back(temp->data);
-                    if(temp->right) s1.push(temp->right);
-                    if(temp->left) s1.push(temp->left); 
-                }
-            }
-        }
-        return spiral;
-    }
+   
     
     Node* getRoot() const{return root;}
 };
+bool isIdentical(Node* r1, Node* r2)
+    {
+        if(!r1 && !r2) return true;
+        if((r1&&!r2)||(!r1&&r2)) return false;
+        if(r1->data != r2->data) return false;
+        return isIdentical(r1->left, r2->left) && (r1->right, r2->right);
+    }
+    bool isSubTree(Node* r1, Node* r2)
+    {
+        if(!r1) return false; 
+        if(!r2) return true;
+        if(isIdentical(r1, r2)) return true;
+        return isSubTree(r1->left, r2) || (r1->right, r2);
+    }
 int main()
 {
     BT tree;
@@ -93,9 +76,19 @@ tree structure:
    4   5 6   7
   /
  8  
+*/
+ BT tree2;
+ tree2.addNode(3);
+ tree2.addNode(6);
+ tree2.addNode(7);
+ /*
+ tree 2 structure:
+     3
+    / \
+   6   7
  */
 
-    vector<int> zz = tree.zigzag(tree.getRoot());
-    for(int i: zz) cout<<i<<" ";
+    if(isSubTree(tree.getRoot(), tree2.getRoot()))cout<<"T2 is subtree of T1";
+    else cout<<"not a subtree";
     return 0;
 }
