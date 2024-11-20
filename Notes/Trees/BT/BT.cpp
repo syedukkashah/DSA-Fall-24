@@ -131,6 +131,13 @@ class BT{
         int a = height(r->left); //height of left sub-tree
         int b = height(r->right); //height of right sub-tree
         return 1 + max(a,b); //return the larger height + 1 to accommodate for root 
+    }
+    int minDepth(Node* r) {
+        if(!r) return 0;
+        int left = minDepth(r->left);
+        int right = minDepth(r->right);
+        if(left==0||right==0) return 1 + max(left, right); //if a subtree doesn't exist we will return the largest and the only subtree present
+        return 1 + min(left, right); //otherwise we return the minimum depth subtree
     }    
     void preOrder(Node* r) //NLR
     {
@@ -176,8 +183,16 @@ class BT{
             largestElementPerLevel(largest, r->left, depth+1); //traverse left subtree and increase depth
             largestElementPerLevel(largest, r->right, depth+1); //traverse right subtree and increase depth
         }
-
     }
+     /*
+     Strategy for max path:
+
+     for each node compute
+     1)Node val
+     2)max path through left child + node val
+     3)max path through right child + node val
+     4) max path through left child as well as right child + node val
+     */
 };
 int main(){
     BT tree;
@@ -217,6 +232,7 @@ int main(){
     cout<<numInternalNodes<<endl;
     cout<<tree.sum(tree.getRoot())<<endl;
     cout<<tree.height(tree.getRoot())<<endl;
+    cout<<tree.minDepth(tree.getRoot())<<endl;
     vector<int> max;
     tree.largestElementPerLevel(max, tree.getRoot(), 0);
     for (int n: max) cout<< n <<" ";
