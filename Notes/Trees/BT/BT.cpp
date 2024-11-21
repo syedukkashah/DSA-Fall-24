@@ -184,15 +184,7 @@ class BT{
             largestElementPerLevel(largest, r->right, depth+1); //traverse right subtree and increase depth
         }
     }
-     /*
-     Strategy for max path:
-
-     for each node compute
-     1)Node val
-     2)max path through left child + node val
-     3)max path through right child + node val
-     4) max path through left child as well as right child + node val
-     */
+    
 };
 int main(){
     BT tree;
