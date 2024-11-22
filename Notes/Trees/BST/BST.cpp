@@ -65,22 +65,22 @@ class BST{
             //leaf node
             if(!r->left && !r->right)
             {
-                delete r;
+                delete r; //simply delete node
                 return NULL;
             }
 
             // one child exists
             if(!r->left && r->right)
             {
-                Node* temp = r->right;
+                Node* temp = r->right; //if only right child exists replace the node with it & delete node
                 delete r;
                 return temp;
             }
             if(r->left && !r->right)
             {
-                Node* temp = r->left;
+                Node* temp = r->left; //if only left child exists replace the node with it & delete node
                 delete r;
-                return r;
+                return temp;
             }
 
             //both children exist
@@ -109,13 +109,13 @@ class BST{
                     delete r;
                     return child;
                 }
-
             }
 
 
         }
     }
 
+    
 };
 int main()
 {
@@ -146,5 +146,14 @@ int main()
     cout<<endl;
     cout<<tree.search(tree.root, 6)<<endl;
     cout<<tree.search(tree.root, -9)<<endl;
+
+    vector<int> sorted;
+    for(int i=0 ; i<9; i++) sorted.push_back(i);
+
+    
+     
+    BST tree2;
+    for(int i: sorted) tree2.insertSortedArray(tree2.root, i);
+    tree2.levelOrder();
     return 0;
 }
