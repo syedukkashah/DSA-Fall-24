@@ -184,7 +184,32 @@ class BT{
             largestElementPerLevel(largest, r->right, depth+1); //traverse right subtree and increase depth
         }
     }
-    
+    /*max path sum strategy:
+       for each node compute
+       (1)node val
+       (2)max path through left child + node val
+       (3)max path through right child + node val
+       (4)max path through left & right child + node val
+    */
+
+   int maxPathSumUtil(Node* r, int& ans)
+   {
+        if(!r) return 0; //if no path exists then return 0
+        //now we will calculate the sum of paths flowing through left & right nodes
+        int left = maxPathSumUtil(r->left, ans);
+        int right = maxPathSumUtil(r->right, ans);
+        //here the strategy has been implemented for (1) & (4) , (2) & (3)
+        int nodeMax = max(max(r->data, r->data+left+right), max(r->data+left, r->data+right));
+        ans = max(ans, nodeMax); //now we update the pre existing sum val with the nodeMax by comparing the values
+        int singlePathSum = max(r->data, max(r->data+left, r->data+right)); // we won't consider  r->data+left+right since it considers path from both subtrees which will form a complete path traversing the whole tree
+        return singlePathSum;
+   }
+   int maxPathSum(Node* r)
+   {
+        int ans = INT16_MIN;
+        maxPathSumUtil(r, ans);
+        return ans;
+   }
 };
 int main(){
     BT tree;
@@ -228,5 +253,7 @@ int main(){
     vector<int> max;
     tree.largestElementPerLevel(max, tree.getRoot(), 0);
     for (int n: max) cout<< n <<" ";
+    cout<<endl;
+    cout<<tree.maxPathSum(tree.getRoot());
     return 0;
 }

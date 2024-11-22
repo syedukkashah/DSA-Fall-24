@@ -1,0 +1,72 @@
+A Binary search tree includes values < root in the left sub-tree & values > root in the right sub-tree
+
+            6
+          /   \
+         3     11
+       /  \    / \
+      2    5  7   18
+                  /
+                 12
+
+
+inserting 8,4,3,6,11,13,12,5
+
+            8
+          /   \
+         4     11
+       /  \      \
+      3    6      13  
+           /      /
+          5      12
+                     
+The inOrder traversal of a BST returns the nodes in ascending order
+
+
+Deleting nodes in a BST:
+1) case 1: Leaf node -> delete 12
+
+ -since 12 is a leaf node we can simply remove that node from the tree
+
+            8
+          /   \
+         4     11
+       /  \      \
+      3    6      13  
+           /      
+          5      
+
+  
+
+2)case 2: node with one child -> delete 6
+  
+  - traverse to node to be deleted (n)
+  - check if n has left child
+     ->if left child doesn't exist set parent of n to right child of n
+  - check if n has right child
+     ->if right child doesn't exist set parent of n to left child of n
+
+            8
+          /   \
+         4     11
+       /  \      \
+      3    5      13  
+                 
+                
+
+3)case 3: node with 2 children -> delete 4
+
+  - traverse to node to be deleted (n)
+  - find the smallest node in right sub-tree of n (nMin) OR find largest node in left sub-tree of n (nMax)
+  - replace nMin or nMax w/ n 
+  - now delete nMin or nMax using delete process again
+   
+
+            8
+          /   \
+         5     11              
+       /        \
+      3          13  
+             
+
+         
+             
