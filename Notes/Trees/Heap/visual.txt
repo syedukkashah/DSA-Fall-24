@@ -1,0 +1,75 @@
+-A heap is a complete Binary Tree
+
+-All levels are completely filled except the last level
+-At the last level, nodes could be filled from the left side
+
+Complete Binary Tree:
+
+                1
+               / \
+             2     3
+            / \   / \
+           4   5 6   7
+         / \  
+        8   9 
+
+
+Even though all levels except the last level are completely filled , this is not a complete
+Binary tree since the nodes at the last level have not been filled from the left side
+                1
+               / \
+             2     3
+            / \   / \                            
+           4   5 6   7
+                / \  
+               8   9 
+
+Not a CBT
+
+                1
+               / \
+             2     3
+            / \   / \
+           4   5 6   7
+                \  
+                 9
+
+
+
+Types of Heaps:
+
+1) Max heap:
+
+-CBT
+-Parent node val should be >= child node val
+-root node val = max node val
+
+               30
+              /   \
+             9    20
+            / \   / \
+           8   3 16  12
+         /  \  
+        5    4 
+
+2) Min Heap:
+
+-CBT
+-Parent Node val should be <= child node val
+-root node val = min node val
+
+These properties should hold for every node in the heap
+
+
+->Build Max Heap
+
+1)Find the node where the new node will be inserted
+2)Maintain the heap property
+
+parent index i
+Left child =  2*i+1
+Right child = 2*i+2
+
+Child index = i
+Parent = (i-1)/2
+
