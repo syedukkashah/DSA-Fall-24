@@ -14,11 +14,7 @@ class BST{
     BST(): root(NULL){}
     Node* insert(int d, Node* r)
     {
-        if(!r)
-        {
-            Node* temp = new Node(d);
-            return temp;
-        }
+        if(!r) return new Node(d);
         if(d<r->data) r->left = insert(d, r->left);
         if(d>r->data) r->right = insert(d, r->right);
         return r;
@@ -110,13 +106,22 @@ class BST{
                     return child;
                 }
             }
-
-
         }
     }
-
-    
 };
+/*Array to Balanced BST
+    Extract the smallest lexicographical preorder traversal from array
+    */
+
+    void ArrayToBST(vector<int>& arr, int start, int end, vector<int>& ans)
+    {
+        if(start>end) return; 
+        int mid = start+(end-start)/2; //mid = starting point + half the distance b/w start & end
+        ans.push_back(arr[mid]);
+        ArrayToBST(arr,start,mid-1,ans); //for left child
+        ArrayToBST(arr,mid+1,end,ans); //for right child
+    }
+    //lab 8 Q5 Node ptr implementation
 int main()
 {
     BST tree;
@@ -147,13 +152,15 @@ int main()
     cout<<tree.search(tree.root, 6)<<endl;
     cout<<tree.search(tree.root, -9)<<endl;
 
-    vector<int> sorted;
-    for(int i=0 ; i<9; i++) sorted.push_back(i);
-
-    
-     
-    BST tree2;
-    for(int i: sorted) tree2.insertSortedArray(tree2.root, i);
-    tree2.levelOrder();
+    vector<int> arr = {1,2,3,4,5,6}, bst;
+    ArrayToBST(arr, 0, arr.size()-1, bst);
+    /*
+            3
+          /   \
+         1     5
+          \   / \
+           2 4   6
+    */
+    for(int i: bst) cout<<i<<" ";  //return preorder traversal of array
     return 0;
 }

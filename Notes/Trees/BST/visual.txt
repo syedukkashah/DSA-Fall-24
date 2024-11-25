@@ -66,7 +66,26 @@ Deleting nodes in a BST:
          5     11              
        /        \
       3          13  
-             
+          
 
-         
-             
+
+Array to BST approach:
+
+
+1 2 3 4 5 6
+
+Median is root
+        3
+       / \
+   1 2    4 5 6
+
+Extract median of elements to the left & right of arr
+
+        3
+      /   \
+     1     5
+      \   / \
+       2 4   6
+
+preorder traversal : 3 1 2 5 4 6
+
