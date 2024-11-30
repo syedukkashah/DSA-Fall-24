@@ -1,4 +1,5 @@
 #include <iostream>
+#include <climits> // For INT_MIN and INT_MAX
 using namespace std;
 
 class Node
@@ -6,24 +7,12 @@ class Node
 public:
     int data, height;
     Node *left, *right;
-
-    Node(int value)
-    {
-        data = value;
-        height = 1;
-        left = right = NULL;
-    }
+    Node(int value): data(value), height(0), left(NULL), right(NULL) {}
 };
-
-// INSERTION
 
 int getHeight(Node *root)
 {
-    if (!root)
-    {
-        return 0;
-    }
-
+    if (!root) return 0;
     return root->height;
 }
 
@@ -36,10 +25,8 @@ Node *rightRotation(Node *root)
 {
     Node *child = root->left;
     Node *childRight = child->right;
-
     child->right = root;
     root->left = childRight;
-
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
     child->height = 1 + max(getHeight(child->left), getHeight(child->right));
     return child;
@@ -49,10 +36,8 @@ Node *leftRotation(Node *root)
 {
     Node *child = root->right;
     Node *childLeft = child->left;
-
     child->left = root;
     root->right = childLeft;
-
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
     child->height = 1 + max(getHeight(child->left), getHeight(child->right));
     return child;
@@ -60,33 +45,18 @@ Node *leftRotation(Node *root)
 
 Node *insert(Node *root, int key)
 {
-    if (!root)
-    {
-        return new Node(key);
-    }
+    if (!root) return new Node(key);
 
-    if (key < root->data)
-    {
-        root->left = insert(root->left, key);
-    }
-    else if (key > root->data)
-    {
-        root->right = insert(root->right, key);
-    }
-    else
-    {
-        return root;
-    }
+    if (key < root->data) root->left = insert(root->left, key);
+    else if (key > root->data) root->right = insert(root->right, key);
+    else return root;
 
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
 
     int balance = getBalance(root);
 
     // Left Left Case
-    if (balance > 1 && key < root->left->data)
-    {
-        return rightRotation(root);
-    }
+    if (balance > 1 && key < root->left->data) return rightRotation(root);
 
     // Left Right Case
     if (balance > 1 && key > root->left->data)
@@ -95,11 +65,8 @@ Node *insert(Node *root, int key)
         return rightRotation(root);
     }
 
-    // Right Right
-    if (balance < -1 && key > root->right->data)
-    {
-        return leftRotation(root);
-    }
+    // Right Right Case
+    if (balance < -1 && key > root->right->data) return leftRotation(root);
 
     // Right Left Case
     if (balance < -1 && key < root->right->data)
@@ -111,7 +78,7 @@ Node *insert(Node *root, int key)
     return root;
 }
 
-bool isAVLHelper(Node *node, int &height, int minVal = 0, int maxVal = 0)
+bool isAVLHelper(Node *node, int &height, int minVal = INT_MIN, int maxVal = INT_MAX)
 {
     if (node == NULL)
     {
@@ -119,18 +86,13 @@ bool isAVLHelper(Node *node, int &height, int minVal = 0, int maxVal = 0)
         return true;
     }
 
-    if (node->data <= minVal || node->data >= maxVal)
-    {
-        return false;
-    }
+    if (node->data <= minVal || node->data >= maxVal) return false;
 
     int leftHeight, rightHeight;
-
     bool leftIsAVL = isAVLHelper(node->left, leftHeight, minVal, node->data);
     bool rightIsAVL = isAVLHelper(node->right, rightHeight, node->data, maxVal);
 
     height = max(leftHeight, rightHeight) + 1;
-
     bool isBalanced = abs(leftHeight - rightHeight) <= 1;
 
     return leftIsAVL && rightIsAVL && isBalanced;
@@ -144,11 +106,7 @@ bool isAVLTree(Node *root)
 
 void inOrder(Node *root)
 {
-    if (!root)
-    {
-        return;
-    }
-
+    if (!root) return;
     inOrder(root->left);
     cout << root->data << " ";
     inOrder(root->right);
@@ -157,21 +115,14 @@ void inOrder(Node *root)
 int main()
 {
     Node *root = NULL;
-
     root = insert(root, 10);
     root = insert(root, 20);
     root = insert(root, 30);
     root = insert(root, 50);
     root = insert(root, 550);
 
-    if (isAVLTree(root))
-    {
-        cout << "The tree is a valid AVL tree." << endl;
-    }
-    else
-    {
-        cout << "The tree is a valid AVL tree." << endl;
-    }
+    if (isAVLTree(root)) cout << "AVL tree." << endl;
+    else cout << "Not an AVL tree." << endl;
 
     cout << "In-Order Traversal: ";
     inOrder(root);
