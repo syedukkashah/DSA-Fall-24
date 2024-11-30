@@ -108,6 +108,14 @@ class BST{
             }
         }
     }
+    vector<int> inOrder_vec(vector<int>& IO, Node* r)
+    {
+        if(!r) return IO;
+        inOrder_vec(IO, r->left);
+        IO.push_back(r->data);
+        inOrder_vec(IO, r->right);
+        return IO;
+    }
 };
 /*Array to Balanced BST
     Extract the smallest lexicographical preorder traversal from array
@@ -138,11 +146,11 @@ int main()
         
             8
           /   \
-         4     11
+        4      11
        /  \      \
       3    6      13  
-           /      /
-          5      12
+          /      /
+         5     12
                      
     */
     tree.levelOrder();
@@ -151,7 +159,6 @@ int main()
     cout<<endl;
     cout<<tree.search(tree.root, 6)<<endl;
     cout<<tree.search(tree.root, -9)<<endl;
-
     vector<int> arr = {1,2,3,4,5,6}, bst;
     ArrayToBST(arr, 0, arr.size()-1, bst);
     /*
@@ -162,5 +169,9 @@ int main()
            2 4   6
     */
     for(int i: bst) cout<<i<<" ";  //return preorder traversal of array
+    cout<<endl;
+    vector<int> traversal;
+    tree.inOrder_vec(traversal, tree.root);
+    for(int i: traversal) cout<<i<<" ";
     return 0;
 }
