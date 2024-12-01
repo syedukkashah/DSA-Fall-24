@@ -15,7 +15,7 @@ class MaxHeap{
     {
         int largest = index;
         int left = 2*index + 1;
-        int right = 2*index + 1;
+        int right = 2*index + 2;
         if(left < heap.size() && heap[largest]<heap[left]) largest = left;
         if(right < heap.size() && heap[largest]<heap[right]) largest = right;
         if(largest!=index)

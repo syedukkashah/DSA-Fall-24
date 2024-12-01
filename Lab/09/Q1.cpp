@@ -74,7 +74,6 @@ Node *insert(Node *root, int key)
         root->right = rightRotation(root->right);
         return leftRotation(root);
     }
-
     return root;
 }
 

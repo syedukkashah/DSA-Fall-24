@@ -210,6 +210,17 @@ class BT{
         maxPathSumUtil(r, ans);
         return ans;
    }
+   //code that merges two trees, if both nodes exist, values of those nodes are added
+   Node* mergeTrees(Node* root1, Node* root2) {
+        if(!root1) return root2;
+        else if (!root2) return root1;
+        else{
+            root2->left = mergeTrees(root1->left, root2->left);
+            root2->data += root1->data;
+            root2->right = mergeTrees(root1->right, root2->right);
+        }
+        return root2;
+    }
 };
 int main(){
     BT tree;

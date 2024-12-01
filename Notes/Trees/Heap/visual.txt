@@ -72,4 +72,3 @@ Right child = 2*i+2
 
 Child index = i
 Parent = (i-1)/2
-

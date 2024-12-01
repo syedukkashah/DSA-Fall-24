@@ -1,11 +1,12 @@
 #include "iostream"
 #include "queue"
+#include "vector"
 using namespace std;
 class Node{
     public:
     int data;
-    Node *left, *right;
-    Node(int d):data(d), right(NULL), left(NULL){}
+    Node *left, *right, *next;
+    Node(int d):data(d), right(NULL), left(NULL), next(NULL){}
     friend class BST;
 };
 class BST{
@@ -64,7 +65,6 @@ class BST{
                 delete r; //simply delete node
                 return NULL;
             }
-
             // one child exists
             if(!r->left && r->right)
             {
@@ -131,11 +131,48 @@ class BST{
     }
     //lab 8 Q5 Node ptr implementation
 
-
-    void fixBST()
+Node* buildBST(vector<int>& Tree, int start,int end)
+{
+    if(start>end) return NULL;
+    //get middle of the LL and make it the root of the BST
+    int mid = start+(end-start)/2;
+    Node* root = new Node(Tree[mid]);
+    //Recurisvely do the same for the left & right children
+    root->left = buildBST(Tree, start, mid-1); //getting middle of left half and making it left child of the root (considers all nodes before the midpoint)
+    root->right = buildBST(Tree,mid+1,end); //getting middle of right half and making it right child of the root (considers all nodes after midpoint)
+    return root;
+}
+Node* BST_fromLL(Node* head)
+{
+    //store LL node vals in a vector
+    vector<int> Tree;
+    Node* temp = head;
+    while(temp)
     {
-        
+        Tree.push_back(temp->data);
+        temp = temp->next;
     }
+    return buildBST(Tree,0,Tree.size()-1);
+}
+
+vector<int> mergeBST(BST t1, BST t2)
+{
+    vector<int> v1, v2, v3;
+    //extract inorder traversals of both trees
+    t1.inOrder_vec(v1,t1.root); 
+    t2.inOrder_vec(v2,t2.root);
+    int i=0,j=0;
+    while(i<v1.size() && j<v2.size())
+    {
+        //add the smaller element at the same index of both vectors
+        if(v1[i]<v2[j]) v3.push_back(v1[i++]); 
+        else v3.push_back(v2[j++]);
+    }
+    //add remaining elements
+    while(i<v1.size()) v3.push_back(v1[i++]);
+    while(j<v2.size())v3.push_back(v2[j++]);
+    return v3;
+}
 int main()
 {
     BST tree;
@@ -179,36 +216,28 @@ int main()
     vector<int> traversal;
     tree.inOrder_vec(traversal, tree.root);
     for(int i: traversal) cout<<i<<" ";
+    cout<<endl;
+    Node* node = new Node(1);
+    node->next = new Node(2);
+    node->next->next = new Node(3);
+    node->next->next->next = new Node(4);
+    node->next->next->next->next = new Node(5);
 
-    Node* root;
-    root->data = 10;
-    root->left->data=4;
-    root->right->data=15;
-    root->left->left->data=2;
-    root->left->right->data=12;
-    root->left->right->left->data=6;
-    root->left->right->right->data=9;
-    root->right->right->data=18;
-    root->right->left->data=7;
-
-/*
-    Tree structure (BST w/ nodes being swapped incorrectly i.e. 12,9 & 10,7)
-            10
-          /    \
-         4      15
-        / \     / \
-       2   12  7   18
-          /  \
-         6    9
-
-         inorder traversal: 2 4 6 12 9 10 7 15 18 (doesn't return ascending order so we need to sort the array)
-*/
-
-
-
- 
-
-
-
+    Node* BinaryST = BST_fromLL(node);
+    
+    BST t1, t2;
+    t1.root = t1.insert(5,t1.root);
+    t1.root = t1.insert(3, t1.root);
+    t1.root = t1.insert(6, t1.root);
+    t1.root = t1.insert(2, t1.root);
+    t1.root = t1.insert(4, t1.root);
+    t2.root = t2.insert(2, t2.root);
+    t2.root = t2.insert(1, t2.root);
+    t2.root = t2.insert(3, t2.root);
+    t2.root = t2.insert(7, t2.root);
+    t2.root = t2.insert(6, t2.root);
+    vector<int> merged = mergeBST(t1,t2);
+    for(int i: merged) cout<<i<<" ";
+    cout<<endl;
     return 0;
 }
