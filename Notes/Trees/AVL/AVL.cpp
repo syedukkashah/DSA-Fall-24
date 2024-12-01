@@ -34,8 +34,8 @@ public:
         r->left = childRight;
 
         // Update heights
-        r->height = 1 + max(getHeight(r->left), getHeight(r->right));
-        child->height = 1 + max(getHeight(child->left), getHeight(child->right));
+        r->height = 1 + max(r->left->height, r->right->height);
+        child->height = 1 + max(child->left->height, child->right->height);
 
         return child; // Return new root
     }
@@ -49,8 +49,8 @@ public:
         r->right = childLeft;
 
         // Update heights
-        r->height = 1 + max(getHeight(r->left), getHeight(r->right));
-        child->height = 1 + max(getHeight(child->left), getHeight(child->right));
+        r->height = 1 + max(r->left->height, r->right->height);
+        child->height = 1 + max(child->left->height, child->right->height);
 
         return child; // Return new root
     }
@@ -62,7 +62,7 @@ public:
         else return r; // Duplicate values not allowed
 
         // Update height
-        r->height = 1 + max(getHeight(r->left), getHeight(r->right));
+        r->height = 1 + max(r->left->height, r->right->height);
 
         // Check balance
         int balance = getBalance(r);
@@ -87,6 +87,71 @@ public:
 
         // No unbalancing
         return r;
+    }
+     Node *deleteNode(Node *node, int key)
+    {
+        if (!node)
+            return node;
+
+        if (key < node->data)
+            node->left = deleteNode(node->left, key);
+        else if (key > node->data)
+            node->right = deleteNode(node->right, key);
+        else
+        {
+            if (!node->left || !node->right)
+            {
+                Node *temp = node->left ? node->left : node->right;
+
+                if (!temp)
+                {
+                    temp = node;
+                    node = nullptr;
+                }
+                else
+                    *node = *temp;
+
+                delete temp;
+            }
+            else
+            {
+                Node *temp = min_value(node->right);
+                node->data = temp->data;
+                node->right = deleteNode(node->right, temp->data);
+            }
+        }
+
+        if (!node)
+            return node;
+
+        node->height = 1 + max(node->left->height, node->right->height);
+
+        int balance = get_balanceFactor(node);
+
+        // Perform rotations if needed
+        // Left-Left Case
+        if (balance > 1 && getBalance(node->left) >= 0)
+            return RR(node);
+
+        // Left-Right Case
+        if (balance > 1 && getBalance(node->left) < 0)
+        {
+            node->left = LL(node->left);
+            return RR(node);
+        }
+
+        // Right-Right Case
+        if (balance < -1 && getBalance(node->right) <= 0)
+            return LL(node);
+
+        // Right-Left Case
+        if (balance < -1 && getBalance(node->right) > 0)
+        {
+            node->right = RR(node->right);
+            return LL(node);
+        }
+
+        return node;
     }
 
     void preOrder(Node* r) { // NLR
