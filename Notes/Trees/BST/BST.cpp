@@ -2,9 +2,9 @@
 #include "queue"
 using namespace std;
 class Node{
+    public:
     int data;
     Node *left, *right;
-    public:
     Node(int d):data(d), right(NULL), left(NULL){}
     friend class BST;
 };
@@ -130,6 +130,12 @@ class BST{
         ArrayToBST(arr,mid+1,end,ans); //for right child
     }
     //lab 8 Q5 Node ptr implementation
+
+
+    void fixBST()
+    {
+        
+    }
 int main()
 {
     BST tree;
@@ -173,5 +179,36 @@ int main()
     vector<int> traversal;
     tree.inOrder_vec(traversal, tree.root);
     for(int i: traversal) cout<<i<<" ";
+
+    Node* root;
+    root->data = 10;
+    root->left->data=4;
+    root->right->data=15;
+    root->left->left->data=2;
+    root->left->right->data=12;
+    root->left->right->left->data=6;
+    root->left->right->right->data=9;
+    root->right->right->data=18;
+    root->right->left->data=7;
+
+/*
+    Tree structure (BST w/ nodes being swapped incorrectly i.e. 12,9 & 10,7)
+            10
+          /    \
+         4      15
+        / \     / \
+       2   12  7   18
+          /  \
+         6    9
+
+         inorder traversal: 2 4 6 12 9 10 7 15 18 (doesn't return ascending order so we need to sort the array)
+*/
+
+
+
+ 
+
+
+
     return 0;
 }
